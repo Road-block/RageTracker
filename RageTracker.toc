@@ -1,0 +1,8 @@
+## Interface: 11200
+## Title: RageTracker
+## Notes: Modified by Roadblock
+## Author: Anaron
+## Version: 1.0.0
+## SavedVariablesPerCharacter: RageTrackerDBPC
+
+RageTracker.xml

@@ -1,0 +1,93 @@
+<Ui xmlns="http://www.blizzard.com/wow/ui/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.blizzard.com/wow/ui/">
+	<Script file="RageTracker.lua" />
+	<Frame name="RageTrackerFrame" enableMouse="true" movable="true" frameStrata="MEDIUM" frameLevel="150" userPlaced="true" parent="UIParent">
+		<Scripts>
+			<OnMouseDown>
+				this:StartMoving()
+			</OnMouseDown>
+			<OnMouseUp>
+				this:StopMovingOrSizing()
+			</OnMouseUp>
+			<OnLoad>
+				this:SetBackdropColor(0,0,0)
+				if UnitClass("player") ~= "Warrior" then
+					this:Hide()
+				else
+					this:RegisterEvent("VARIABLES_LOADED")
+				end
+			</OnLoad>
+			<ONEvent>
+				RageTracker_OnEvent(this,event,arg1)
+			</ONEvent>
+			<OnSizeChanged>
+				if RageTrackerFrame_Fill then
+					RageTrackerFrame_Fill:SetHeight(this:GetHeight())
+				end
+			</OnSizeChanged>
+		</Scripts>
+		<Backdrop edgeFile="Interface\Tooltips\UI-Tooltip-Border" bgFile="Interface/Tooltips/UI-Tooltip-Background" tile="true">
+			<EdgeSize>
+				<AbsValue val="16"/>
+			</EdgeSize>
+			<TileSize>
+				<AbsValue val="32"/>
+			</TileSize>
+			<BackgroundInsets>
+				<AbsInset left="5" right="5" top="5" bottom="5" />
+			</BackgroundInsets>
+		</Backdrop>
+		<Size>
+			<AbsDimension x="220" y="30" />
+		</Size>
+		<Anchors>
+			<Anchor point="CENTER" />
+		</Anchors>
+	</Frame>
+	<Frame name="$parent_TextFrame" parent="RageTrackerFrame">
+		<Size>
+			<AbsDimension x="200" y="40" />
+		</Size>
+		<Anchors>
+			<Anchor point="CENTER" />
+		</Anchors>
+		<Layers>
+			<Layer level="ARTWORK">
+				<FontString name="$parent_Text" inherits="GameFontNormal" text="Rage:">
+					<Anchors>
+						<Anchor point="CENTER">
+						</Anchor>
+					</Anchors>
+				</FontString>
+			</Layer>
+		</Layers>
+	</Frame>
+	<Frame name="$parent_Fill" parent="RageTrackerFrame">
+		<Scripts>
+			<OnLoad>
+				this:SetBackdropColor(1,0,0)
+				this:SetHeight(RageTrackerFrame:GetHeight())
+				this:SetWidth(UnitMana("player")*(RageTrackerFrame:GetWidth())/100+1)
+				RageTrackerFrame_TextFrame_Text:SetText("Rage: "..UnitMana("player"))
+				this:RegisterEvent("UNIT_RAGE")
+			</OnLoad>
+			<OnEvent>
+				RageTrackerFill_OnEvent(this,event,arg1)
+			</OnEvent>
+		</Scripts>
+		<Backdrop bgFile="Interface/Tooltips/UI-Tooltip-Background" tile="true">
+			<TileSize>
+				<AbsValue val="32"/>
+			</TileSize>
+			<BackgroundInsets>
+				<AbsInset left="5" right="5" top="5" bottom="5" />
+			</BackgroundInsets>
+		</Backdrop>
+		<Size>
+			<AbsDimension x="100" y="0" />
+		</Size>
+		<Anchors>
+			<Anchor point="LEFT" />
+		</Anchors>
+	</Frame>
+</Ui>
